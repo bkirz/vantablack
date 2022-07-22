@@ -6,6 +6,7 @@ authors = ["Ben Kirzhner <ben.kirzhner@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+simfile = { git = "https://github.com/garcia/simfile.git", branch = "dev" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
