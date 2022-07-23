@@ -1,12 +1,12 @@
 import copy
 import decimal
 
-import simfile
+from simfile import Simfile, SSCChart
 from simfile.timing import displaybpm
 
 
 def mmod_bpm(
-    sf: simfile.Simfile, ssc_chart: simfile.SSCChart = simfile.SSCChart()
+    simfile: Simfile, ssc_chart: SSCChart = SSCChart()
 ) -> decimal.Decimal:
     """
     Given a simfile, replicates the calculation done by stepmania to determine the
@@ -17,7 +17,7 @@ def mmod_bpm(
     timing fields, the chart will be used as the source of timing.
     """
 
-    match displaybpm.displaybpm(sf, ssc_chart):
+    match displaybpm.displaybpm(simfile, ssc_chart):
         case displaybpm.StaticDisplayBPM(value=value):
             return value
         case displaybpm.RangeDisplayBPM(max=max):
@@ -28,11 +28,11 @@ def mmod_bpm(
             # to random ('*' in the simfile) then we can't get the mmod value that way.
             # This kludge short-circuits that behavior by forcibly removing '*' values.
             if sf.displaybpm == "*":
-                sf = copy.copy(sf)
+                simfile = copy.copy(simfile)
                 del sf.displaybpm
 
             if ssc_chart.displaybpm == "*":
                 ssc_chart = copy.copy(ssc_chart)
                 del ssc_chart.displaybpm
 
-            return mmod_bpm(sf, ssc_chart)
+            return mmod_bpm(simfile, ssc_chart)
