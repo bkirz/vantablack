@@ -27,12 +27,12 @@ def mmod_bpm(
             # is almost always the same as the mmod bpm. However, if the displaybpm is set
             # to random ('*' in the simfile) then we can't get the mmod value that way.
             # This kludge short-circuits that behavior by forcibly removing '*' values.
-            copied_simfile = copy.copy(sf)
-            if copied_simfile.displaybpm == "*":
-                del copied_simfile.displaybpm
+            if sf.displaybpm == "*":
+                sf = copy.copy(sf)
+                del sf.displaybpm
 
-            copied_ssc = copy.copy(ssc_chart)
-            if copied_ssc.displaybpm == "*":
-                del copied_ssc.displaybpm
+            if ssc_chart.displaybpm == "*":
+                ssc_chart = copy.copy(ssc_chart)
+                del ssc_chart.displaybpm
 
-            return mmod_bpm(copied_simfile, copied_ssc)
+            return mmod_bpm(sf, ssc_chart)
