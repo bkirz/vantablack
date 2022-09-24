@@ -93,8 +93,8 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "msdparser"
-version = "2.0.0b5"
-description = "Simple MSD parser (rhythm game format)"
+version = "2.0.0"
+description = "Robust & lightning fast MSD parser (StepMania file format)"
 category = "main"
 optional = false
 python-versions = ">=3.6"
@@ -210,7 +210,7 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 name = "simfile"
-version = "2.1.0b3"
+version = "2.1.0rc2"
 description = "Modern simfile library for Python"
 category = "main"
 optional = false
@@ -219,13 +219,13 @@ develop = false
 
 [package.dependencies]
 fs = ">=2.4.15,<2.5.0"
-msdparser = ">=2.0.0b4,<2.1.0"
+msdparser = ">=2.0.0,<2.1.0"
 
 [package.source]
 type = "git"
 url = "https://github.com/garcia/simfile.git"
 reference = "dev"
-resolved_reference = "d450588a60e383ccdca1ab81891ac1c067c84055"
+resolved_reference = "4528810dc729a18b0acefcbfec248d21d898e2ac"
 
 [[package]]
 name = "six"
@@ -234,6 +234,14 @@ description = "Python 2 and 3 compatibility utilities"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+category = "main"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "tomli"
@@ -262,7 +270,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "fd9f8c3d4e12c789a59f245d5c51f977accbca368e939d96252ccb13c499dd41"
+content-hash = "0e2ece284cb106f36d6f114040d576747522bbb147876e61c09a4a3568d7d926"
 
 [metadata.files]
 appdirs = [
@@ -318,8 +326,8 @@ more-itertools = [
     {file = "more_itertools-8.13.0-py3-none-any.whl", hash = "sha256:c5122bffc5f104d37c1626b8615b511f3427aa5389b94d61e5ef8236bfbc3ddb"},
 ]
 msdparser = [
-    {file = "msdparser-2.0.0b5-py3-none-any.whl", hash = "sha256:30befa83b732237683b32522b03c6aa831083a732262175604adaefc8238a6ac"},
-    {file = "msdparser-2.0.0b5.tar.gz", hash = "sha256:5453a2971f38a3f7f3fbf68536bc05b3fe109569ee2672506d0c8f877fe76b04"},
+    {file = "msdparser-2.0.0-py3-none-any.whl", hash = "sha256:bbef8c89b2dc16183ba714354b093fff11a43469971c42972284c5046826002d"},
+    {file = "msdparser-2.0.0.tar.gz", hash = "sha256:9bb6cf4b705c76850b1ce22823c768b62ba2bb63d1c2407bbe3e2c23e38be8e3"},
 ]
 mypy = [
     {file = "mypy-0.971-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:f2899a3cbd394da157194f913a931edfd4be5f274a88041c9dc2d9cdcb1c315c"},
@@ -382,6 +390,10 @@ simfile = []
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+toml = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
