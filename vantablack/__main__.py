@@ -68,11 +68,7 @@ def main(path_to_pack_dir: str):
         for violation in song_violations:
             print('  ', violation.message)
         
-
         all_violations.extend(song_violations)
-
-    
-
 
 
 # python vantablack.py ~/stepmania_songs/my_pack
