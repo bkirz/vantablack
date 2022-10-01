@@ -17,7 +17,7 @@ class SSCOnly(SongRule):
             case _:
                 violation = RuleViolation(
                     originating_rule=self,
-                    message="SM file found at path: {}".format(song.sm_path),
+                    message="Unexpected SM file found at path: {}".format(song.sm_path),
                     target=song,
                 )
                 return [violation]
