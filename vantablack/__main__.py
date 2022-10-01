@@ -4,7 +4,7 @@ import toml
 from simfile.dir import SimfilePack
 
 import registry
-from rules import ssc_only, require_chart, require_credit
+from rules import ssc_only, require_chart, require_credit, restrict_field
 from vantablack.rule import RuleViolation, SongRule
 
 __version__ = "0.1.0"
@@ -17,6 +17,7 @@ def main(path_to_pack_dir: str):
         ssc_only.SSCOnly,
         require_chart.RequireChart,
         require_credit.RequireCredit,
+        restrict_field.RestrictField,
     ])
 
     pack = SimfilePack(path_to_pack_dir)
@@ -44,6 +45,9 @@ def main(path_to_pack_dir: str):
     all_violations: RuleViolation = []
 
     simfile_dirs = sorted(pack.simfile_dirs(), key=lambda song: song.simfile_dir)
+
+    print(f"Validating {len(simfile_dirs)} songs...")
+
     for song_dir in simfile_dirs:
         song_violations = []
 
