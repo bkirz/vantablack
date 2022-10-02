@@ -4,7 +4,7 @@ import toml
 from simfile.dir import SimfilePack
 
 import registry
-from rules import ssc_only, require_chart, require_credit, restrict_field
+from rules import no_extra_files, ssc_only, require_chart, require_credit, restrict_field
 from vantablack.rule import RuleViolation, SongRule
 
 __version__ = "0.1.0"
@@ -18,6 +18,7 @@ def main(path_to_pack_dir: str):
         require_chart.RequireChart,
         require_credit.RequireCredit,
         restrict_field.RestrictField,
+        no_extra_files.NoExtraFiles,
     ])
 
     pack = SimfilePack(path_to_pack_dir)
