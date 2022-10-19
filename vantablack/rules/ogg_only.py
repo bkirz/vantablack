@@ -1,7 +1,8 @@
+from rule import Scope, SongRule
 from simfile.dir import SimfileDirectory
-from rule import SongRule, Scope
 
 from vantablack.rule import RuleViolation
+
 
 class OggOnly(SongRule):
     name = 'ogg_only'

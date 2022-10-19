@@ -1,13 +1,11 @@
 from dataclasses import dataclass
 from typing import Generic, Protocol, TypeVar
 
-from simfile.dir import SimfilePack, SimfileDirectory
-from simfile.sm import SMSimfile, SMChart
-from simfile.ssc import SSCSimfile, SSCChart
-from simfile.types import Chart
-
 from scope import Scope
-
+from simfile.dir import SimfileDirectory, SimfilePack
+from simfile.sm import SMChart, SMSimfile
+from simfile.ssc import SSCChart, SSCSimfile
+from simfile.types import Chart
 
 T = TypeVar('T')
 S = TypeVar('S', bound=Scope)

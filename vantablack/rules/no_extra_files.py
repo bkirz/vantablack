@@ -1,10 +1,11 @@
 import operator
 import os
 
+from rule import Scope, SongRule
 from simfile.dir import SimfileDirectory
-from rule import SongRule, Scope
 
 from vantablack.rule import RuleViolation
+
 
 class NoExtraFiles(SongRule):
     name = 'no_extra_files'
