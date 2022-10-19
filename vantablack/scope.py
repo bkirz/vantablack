@@ -1,5 +1,6 @@
 from enum import Enum, unique
 
+
 @unique
 class Scope(Enum):
     _ignore_ = '_SCOPE_HIERARCHY'
