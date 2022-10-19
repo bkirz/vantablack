@@ -1,10 +1,13 @@
-import sys, os
-
-import toml
-from simfile.dir import SimfilePack
+import os
+import sys
 
 import registry
-from rules import no_extra_files, ssc_only, require_chart, require_credit, restrict_field
+import toml
+from rules import (no_extra_files, ogg_only, require_chart, require_credit,
+                   restrict_field, ssc_only)
+from simfile import SimfileDirectory
+from simfile.dir import SimfilePack
+
 from vantablack.rule import RuleViolation, SongRule
 
 __version__ = "0.1.0"
@@ -19,6 +22,7 @@ def main(path_to_pack_dir: str):
         require_credit.RequireCredit,
         restrict_field.RestrictField,
         no_extra_files.NoExtraFiles,
+        ogg_only.OggOnly,
     ])
 
     pack = SimfilePack(path_to_pack_dir)
@@ -33,14 +37,12 @@ def main(path_to_pack_dir: str):
     rules: list[SongRule] = []
     for scope, rule_configs in raw_config['rules'].items():
         for rule_name, rule_config in rule_configs.items():
-            # print("Evaluating rule '{}' with scope '{}' and config '{}'".format(rule_name, scope, rule_config))
-
             rule_class = rule_registry.rule_class(rule_name)
             if rule_class:
                 # TODO: incorporate scope into this, somehow?
                 rules.append(rule_class(rule_config))
             else:
-                # print("  Unrecognized rule '{}', skipping.".format(rule_name))
+                print(f"  Unrecognized rule '{rule_name}', skipping.")
                 pass
     
     all_violations: RuleViolation = []
@@ -50,27 +52,30 @@ def main(path_to_pack_dir: str):
     print(f"Validating {len(simfile_dirs)} songs...")
 
     for song_dir in simfile_dirs:
-        song_violations = []
-
-        formatted_dir_name = os.path.split(song_dir.simfile_dir)[-1]
-        print(formatted_dir_name, '  ', end='')
-
-        for rule in rules:
-            rule_violations = rule.apply(song_dir)
-            if len(rule_violations) == 0:
-                print('.', end='')
-            else:
-                print('F', end='')
-
-            song_violations.extend(rule_violations)
-
-        print('')
-
-        for violation in song_violations:
-            print('  ', violation.message)
-        
+        song_violations = check_song(song_dir, rules)
         all_violations.extend(song_violations)
 
+def check_song(song_dir: SimfileDirectory, rules: list[SongRule]) -> list[RuleViolation]:
+    song_violations = []
+
+    formatted_dir_name = os.path.split(song_dir.simfile_dir)[-1]
+    print(formatted_dir_name, '  ', end='')
+
+    for rule in rules:
+        rule_violations = rule.apply(song_dir)
+        if len(rule_violations) == 0:
+            print('.', end='')
+        else:
+            print('F', end='')
+
+        song_violations.extend(rule_violations)
+
+    print('')
+
+    for violation in song_violations:
+        print('  ', violation.message)
+
+    return song_violations
 
 # python vantablack.py ~/stepmania_songs/my_pack
 if __name__ == "__main__":
