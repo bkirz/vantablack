@@ -3,27 +3,36 @@ import sys
 
 import registry
 import toml
-from rules import (no_extra_files, ogg_only, require_chart, require_credit,
-                   restrict_field, ssc_only)
+from rules import (
+    no_extra_files,
+    ogg_only,
+    require_chart,
+    require_credit,
+    restrict_field,
+    ssc_only,
+)
 from simfile import SimfileDirectory
 from simfile.dir import SimfilePack
 
 from vantablack.rule import RuleViolation, SongRule
 
 __version__ = "0.1.0"
-CONFIG_FILENAME = 'vantablack.toml'
+CONFIG_FILENAME = "vantablack.toml"
+
 
 def main(path_to_pack_dir: str):
     # TODO: Where should the top-level registry be defined? How
     # should plugins add their own rules?
-    rule_registry = registry.Registry([
-        ssc_only.SSCOnly,
-        require_chart.RequireChart,
-        require_credit.RequireCredit,
-        restrict_field.RestrictField,
-        no_extra_files.NoExtraFiles,
-        ogg_only.OggOnly,
-    ])
+    rule_registry = registry.Registry(
+        [
+            ssc_only.SSCOnly,
+            require_chart.RequireChart,
+            require_credit.RequireCredit,
+            restrict_field.RestrictField,
+            no_extra_files.NoExtraFiles,
+            ogg_only.OggOnly,
+        ]
+    )
 
     pack = SimfilePack(path_to_pack_dir)
 
@@ -35,7 +44,7 @@ def main(path_to_pack_dir: str):
         raw_config = toml.load(f)
 
     rules: list[SongRule] = []
-    for scope, rule_configs in raw_config['rules'].items():
+    for scope, rule_configs in raw_config["rules"].items():
         for rule_name, rule_config in rule_configs.items():
             rule_class = rule_registry.rule_class(rule_name)
             if rule_class:
@@ -44,7 +53,7 @@ def main(path_to_pack_dir: str):
             else:
                 print(f"  Unrecognized rule '{rule_name}', skipping.")
                 pass
-    
+
     all_violations: RuleViolation = []
 
     simfile_dirs = sorted(pack.simfile_dirs(), key=lambda song: song.simfile_dir)
@@ -55,27 +64,31 @@ def main(path_to_pack_dir: str):
         song_violations = check_song(song_dir, rules)
         all_violations.extend(song_violations)
 
-def check_song(song_dir: SimfileDirectory, rules: list[SongRule]) -> list[RuleViolation]:
+
+def check_song(
+    song_dir: SimfileDirectory, rules: list[SongRule]
+) -> list[RuleViolation]:
     song_violations = []
 
     formatted_dir_name = os.path.split(song_dir.simfile_dir)[-1]
-    print(formatted_dir_name, '  ', end='')
+    print(formatted_dir_name, "  ", end="")
 
     for rule in rules:
         rule_violations = rule.apply(song_dir)
         if len(rule_violations) == 0:
-            print('.', end='')
+            print(".", end="")
         else:
-            print('F', end='')
+            print("F", end="")
 
         song_violations.extend(rule_violations)
 
-    print('')
+    print("")
 
     for violation in song_violations:
-        print('  ', violation.message)
+        print("  ", violation.message)
 
     return song_violations
+
 
 # python vantablack.py ~/stepmania_songs/my_pack
 if __name__ == "__main__":

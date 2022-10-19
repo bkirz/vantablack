@@ -5,7 +5,7 @@ from vantablack.rule import RuleViolation
 
 
 class SSCOnly(SongRule):
-    name = 'ssc_only'
+    name = "ssc_only"
     scope = Scope.SONG
 
     def __init__(self, _config):

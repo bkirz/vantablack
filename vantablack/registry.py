@@ -1,8 +1,9 @@
 import rule
 from typing import Optional
 
+
 class Registry:
-    '''A lookup table of all configured rule classes.'''
+    """A lookup table of all configured rule classes."""
 
     def __init__(self, rule_classes: list[type[rule.Rule]]):
         self._rule_classes_by_name = {rc.name: rc for rc in rule_classes}

@@ -7,13 +7,14 @@ from simfile.sm import SMChart, SMSimfile
 from simfile.ssc import SSCChart, SSCSimfile
 from simfile.types import Chart
 
-T = TypeVar('T')
-S = TypeVar('S', bound=Scope)
+T = TypeVar("T")
+S = TypeVar("S", bound=Scope)
+
 
 @dataclass
 class RuleViolation(Generic[T]):
     message: str
-    originating_rule: 'Rule'
+    originating_rule: "Rule"
     target: T
 
 
@@ -23,7 +24,6 @@ class Rule(Protocol[T, S]):
 
     def apply(self, target: T) -> list[RuleViolation[T]]:
         raise NotImplementedError
-        
 
 
 PackRule = Rule[SimfilePack, Scope.PACK]

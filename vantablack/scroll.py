@@ -5,9 +5,7 @@ from simfile import Simfile, SSCChart
 from simfile.timing import displaybpm
 
 
-def mmod_bpm(
-    simfile: Simfile, ssc_chart: SSCChart = SSCChart()
-) -> decimal.Decimal:
+def mmod_bpm(simfile: Simfile, ssc_chart: SSCChart = SSCChart()) -> decimal.Decimal:
     """
     Given a simfile, replicates the calculation done by stepmania to determine the
     maximum BPM to use when calculating the scroll modifier for an M-Mod.
