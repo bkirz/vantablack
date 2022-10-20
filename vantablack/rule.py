@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Protocol, TypeVar
+from typing import Any, Generic, Literal, Protocol, TypeVar
 
 from scope import Scope
 from simfile.dir import SimfileDirectory, SimfilePack
@@ -22,16 +22,12 @@ class Rule(Protocol[T, S]):
     name: str
     scope: S
 
+    def __init__(self, config: Any):
+        pass
+
     def apply(self, target: T) -> list[RuleViolation[T]]:
         raise NotImplementedError
 
 
-PackRule = Rule[SimfilePack, Scope.PACK]
-SongRule = Rule[SimfileDirectory, Scope.SONG]
-
-# SSCFileRule = Rule[SSCSimfile, Scope.SSC_FILE]
-# SMFileRule = Rule[SMSimfile, Scope.SM_FILE]
-
-# ChartRule = Rule[Chart, Scope.CHART]
-# SSCChartRule = Rule[SSCChart, Scope.SSC_CHART]
-# SChartRule = Rule[SMChart, Scope.SM_CHART]
+PackRule = Rule[SimfilePack, Literal[Scope.PACK]]
+SongRule = Rule[SimfileDirectory, Literal[Scope.SONG]]
