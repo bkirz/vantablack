@@ -16,14 +16,16 @@ from simfile.dir import SimfilePack
 
 from vantablack.rule import RuleViolation, SongRule
 
+import argparse
+
 __version__ = "0.1.0"
 CONFIG_FILENAME = "vantablack.toml"
 
 
-def main(path_to_pack_dir: str):
+def build_registry():
     # TODO: Where should the top-level registry be defined? How
     # should plugins add their own rules?
-    rule_registry = registry.Registry(
+    return registry.Registry(
         [
             ssc_only.SSCOnly,
             require_chart.RequireChart,
@@ -33,6 +35,10 @@ def main(path_to_pack_dir: str):
             ogg_only.OggOnly,
         ]
     )
+
+
+def validate_pack(path_to_pack_dir: str):
+    rule_registry = build_registry()
 
     pack = SimfilePack(path_to_pack_dir)
 
@@ -90,6 +96,10 @@ def check_song(
     return song_violations
 
 
-# python vantablack.py ~/stepmania_songs/my_pack
 if __name__ == "__main__":
-    main(sys.argv[1])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--pack", type=str, dest="pack")
+    args = parser.parse_args()
+
+    if args.pack is not None:
+        validate_pack(args.pack)
