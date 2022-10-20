@@ -44,7 +44,7 @@ song.background.dimensions = { width = 1366, height = 768 }
 song.banner.dimensions = { width = 418, height = 164 }
 song.jacket.dimensions = { width = 512, height = 512 }
 
-# All files should be directly referenced by a .ssc file.
+# All files within song directories should be directly referenced by a .ssc file.
 song.no_extra_files.enabled = true
 
 # Fail if any songs are missing a challenge chart.
