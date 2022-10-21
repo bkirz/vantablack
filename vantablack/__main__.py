@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Any
 
 import registry
 import toml
@@ -13,6 +14,7 @@ from rules import (
 )
 from simfile import SimfileDirectory
 from simfile.dir import SimfilePack
+from vantablack.registry import Registry
 
 from vantablack.rule import RuleViolation, SongRule
 
@@ -37,18 +39,14 @@ def build_registry():
     )
 
 
-def validate_pack(path_to_pack_dir: str):
-    rule_registry = build_registry()
-
-    pack = SimfilePack(path_to_pack_dir)
-
-    path_to_config = os.path.join(path_to_pack_dir, CONFIG_FILENAME)
-
+def load_config(path):
     # TODO: gracefully handle missing file
-    with open(path_to_config) as f:
+    with open(path) as f:
         # TODO: gracefully handle malformed file
         raw_config = toml.load(f)
 
+
+def build_rules(rule_registry: Registry, raw_config: dict[str, Any]) -> list[SongRule]:
     rules: list[SongRule] = []
     for scope, rule_configs in raw_config["rules"].items():
         for rule_name, rule_config in rule_configs.items():
@@ -60,15 +58,38 @@ def validate_pack(path_to_pack_dir: str):
                 print(f"  Unrecognized rule '{rule_name}', skipping.")
                 pass
 
+    return rules
+
+
+def validate_pack(path_to_pack_dir: str):
+    rule_registry = build_registry()
+
+    pack = SimfilePack(path_to_pack_dir)
+    path_to_config = os.path.join(path_to_pack_dir, CONFIG_FILENAME)
+    raw_config = load_config(path_to_config)
+
+    rules = build_rules(rule_registry, raw_config)
+
     all_violations: RuleViolation = []
 
     simfile_dirs = sorted(pack.simfile_dirs(), key=lambda song: song.simfile_dir)
-
     print(f"Validating {len(simfile_dirs)} songs...")
 
     for song_dir in simfile_dirs:
         song_violations = check_song(song_dir, rules)
         all_violations.extend(song_violations)
+
+
+def validate_song(path_to_song_dir: str):
+    rule_registry = build_registry()
+
+    song = SimfileDirectory(path_to_song_dir)
+    path_to_config = os.path.join(path_to_song_dir, CONFIG_FILENAME)
+    raw_config = load_config(path_to_config)
+
+    rules = build_rules(rule_registry, raw_config)
+
+    check_song(song, rules)
 
 
 def check_song(
@@ -98,8 +119,14 @@ def check_song(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--pack", type=str, dest="pack")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-p", "--pack", type=str, dest="pack")
+    group.add_argument("-s", "--song", type=str, dest="song")
+
     args = parser.parse_args()
 
     if args.pack is not None:
         validate_pack(args.pack)
+
+    if args.song is not None:
+        validate_song(args.song)
