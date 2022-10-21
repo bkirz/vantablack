@@ -40,10 +40,11 @@ def build_registry():
 
 
 def load_config(path):
+    print(f"Loading config from {path}")
     # TODO: gracefully handle missing file
     with open(path) as f:
         # TODO: gracefully handle malformed file
-        raw_config = toml.load(f)
+        return toml.load(f)
 
 
 def build_rules(rule_registry: Registry, raw_config: dict[str, Any]) -> list[SongRule]:
@@ -84,7 +85,8 @@ def validate_song(path_to_song_dir: str):
     rule_registry = build_registry()
 
     song = SimfileDirectory(path_to_song_dir)
-    path_to_config = os.path.join(path_to_song_dir, CONFIG_FILENAME)
+    (path_to_pack_dir, _song_dir_name) = os.path.split(path_to_song_dir)
+    path_to_config = os.path.join(path_to_pack_dir, CONFIG_FILENAME)
     raw_config = load_config(path_to_config)
 
     rules = build_rules(rule_registry, raw_config)
@@ -97,7 +99,7 @@ def check_song(
 ) -> list[RuleViolation]:
     song_violations = []
 
-    formatted_dir_name = os.path.split(song_dir.simfile_dir)[-1]
+    (_prefix, formatted_dir_name) = os.path.split(song_dir.simfile_dir)
     print(formatted_dir_name, "  ", end="")
 
     for rule in rules:
@@ -119,6 +121,7 @@ def check_song(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-p", "--pack", type=str, dest="pack")
     group.add_argument("-s", "--song", type=str, dest="song")
@@ -126,7 +129,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.pack is not None:
-        validate_pack(args.pack)
+        validate_pack(os.path.abspath(args.pack))
 
     if args.song is not None:
-        validate_song(args.song)
+        validate_song(os.path.abspath(args.song))
