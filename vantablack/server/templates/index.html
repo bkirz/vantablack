@@ -1,0 +1,16 @@
+<!doctype html>
+<title>Vantablack</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<h1>Validate your StepMania songs and song packs</h1>
+
+<form method=post enctype=multipart/form-data>
+  <input type=file name=songfolder>
+  <input type=submit value=Upload>
+</form>
+<p>
+  Vantablack was made by <a href="https://mobile.twitter.com/bkirz">@bkirz</a> and
+  builds on top of the incredible <a href="https://github.com/garcia/simfile">simfile</a> library.
+
+  <br />
+  Its source code is available <a href="https://github.com/bkirz/vantablack">on GitHub</a>.
+</p>

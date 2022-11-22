@@ -27,14 +27,16 @@ class NoExtraFiles(SongRule):
     def apply(self, song: SimfileDirectory) -> list[RuleViolation]:
         song_dir = song.simfile_dir
 
-        expected_file_paths: list[str] = filter(
-            lambda path: path is not None,
-            [
-                *operator.attrgetter(*self.ASSET_KEYS)(song.assets()),
-                *self.allowed_exceptions,
-                song.sm_path,
-                song.ssc_path,
-            ],
+        expected_file_paths: list[str] = list(
+            filter(
+                lambda path: path is not None,  # type: ignore
+                [
+                    *operator.attrgetter(*self.ASSET_KEYS)(song.assets()),
+                    *self.allowed_exceptions,
+                    song.sm_path,
+                    song.ssc_path,
+                ],
+            )
         )
 
         normalized_expected_files = [

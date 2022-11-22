@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Generic, Literal, Protocol, TypeVar
 
-from scope import Scope
+from vantablack.scope import Scope
 from simfile.dir import SimfileDirectory, SimfilePack
 from simfile.sm import SMChart, SMSimfile
 from simfile.ssc import SSCChart, SSCSimfile

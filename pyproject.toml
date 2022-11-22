@@ -8,6 +8,8 @@ authors = ["Ben Kirzhner <ben.kirzhner@gmail.com>"]
 python = "^3.10"
 simfile = { git = "https://github.com/garcia/simfile.git", branch = "dev" }
 toml = "^0.10.2"
+Flask = "^2.2.2"
+fs = "^2.4.16"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
